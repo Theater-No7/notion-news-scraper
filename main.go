@@ -35,6 +35,10 @@ func main() {
 
 	fmt.Println("🚀 インプット自動化システムを起動します...")
 
+	// 🌟 ここが追加ポイント：フィルターの基準時間を「24時間前」に設定
+	timeThreshold := time.Now().Add(-24 * time.Hour)
+	fmt.Printf("⏳ フィルター基準時刻: %s 以降の記事のみ取得します\n", timeThreshold.Format("2006/01/02 15:04:05"))
+
 	for _, feed := range feeds {
 		parsedFeed, err := fp.ParseURL(feed.URL)
 		if err != nil {
@@ -49,6 +53,16 @@ func main() {
 				break
 			}
 
+			// 🌟 追加した時間フィルターロジック（検問所）
+			if item.PublishedParsed == nil {
+				fmt.Printf("  ⏭ スキップ (日付データなし): %s\n", item.Title)
+				continue
+			}
+			if item.PublishedParsed.Before(timeThreshold) {
+				fmt.Printf("  ⏭ スキップ (24時間以上前の古い記事): %s\n", item.Title)
+				continue
+			}
+
 			query := &notion.DatabaseQuery{
 				Filter: &notion.DatabaseQueryFilter{
 					Property: "Title",
@@ -59,14 +73,11 @@ func main() {
 			}
 			res, _ := client.QueryDatabase(context.Background(), dbID, query)
 			if len(res.Results) > 0 {
-				fmt.Printf("  ⏭ スキップ (既読): %s\n", item.Title)
+				fmt.Printf("  ⏭ スキップ (既読・登録済み): %s\n", item.Title)
 				continue
 			}
 
-			pubDate := time.Now()
-			if item.PublishedParsed != nil {
-				pubDate = *item.PublishedParsed
-			}
+			pubDate := *item.PublishedParsed
 			notionDate := notion.NewDateTime(pubDate, false)
 			link := item.Link
 
