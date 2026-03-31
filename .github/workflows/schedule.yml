@@ -1,0 +1,27 @@
+name: News Scraper Automation
+
+on:
+  # 定期実行の設定（時間はUTC基準のため、日本時間からマイナス9時間して指定します）
+  # JST 6:00, 12:00, 18:00, 24:00 -> UTC 21:00, 3:00, 9:00, 15:00
+  schedule:
+    - cron: '0 21,3,9,15 * * *'
+  # GitHubの画面から手動で実行できるボタンも用意しておきます
+  workflow_dispatch:
+
+jobs:
+  run-scraper:
+    runs-on: ubuntu-latest
+    steps:
+      - name: リポジトリのコードをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: Go言語の環境をセットアップ
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: ニュース収集＆Notion書き込みの実行！
+        env:
+          NOTION_SECRET: ${{ secrets.NOTION_SECRET }}
+          NOTION_DB_ID: ${{ secrets.NOTION_DB_ID }}
+        run: go run main.go
