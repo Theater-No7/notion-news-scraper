@@ -1,0 +1,32 @@
+[
+    {
+        "url": "https://zenn.dev/topics/go/feed",
+        "category": "IT",
+        "media_name": "Zenn (Go言語)"
+    },
+    {
+        "url": "https://zenn.dev/topics/typescript/feed",
+        "category": "IT",
+        "media_name": "Zenn (TS言語)"
+    },
+    {
+        "url": "https://note.com/hashtag/uiux/rss",
+        "category": "IT",
+        "media_name": "note (UI/UX)"
+    },
+    {
+        "url": "https://news.yahoo.co.jp/rss/topics/it.xml",
+        "category": "General",
+        "media_name": "Yahoo!ニュース (IT)"
+    },
+    {
+        "url": "https://news.google.com/rss/search?q=%E9%BE%8D%E5%AE%AE%E5%9F%8E+%E3%82%A2%E3%83%BC%E3%83%86%E3%82%A3%E3%82%B9%E3%83%88&hl=ja&gl=JP&ceid=JP:ja",
+        "category": "Hobby",
+        "media_name": "龍宮城 (Google News)"
+    },
+    {
+        "url": "https://mazzel.tokyo/news/feed/",
+        "category": "Hobby",
+        "media_name": "MAZZEL"
+    }
+]
